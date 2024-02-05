@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Dashboard</title>
+</head>
+<body>
+    <h2>Driver Dashboard</h2>
+
+    {% if user_data %}
+        <p>Welcome, {{ user_data.email }}!</p>
+        <!-- Display additional user data as needed -->
+    {% else %}
+        <p>Error fetching user data.</p>
+    {% endif %}
+
+    <p><a href="{{ url_for('logout') }}">Logout</a></p>
+</body>
+</html>
