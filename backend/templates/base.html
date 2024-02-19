@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Park!t - Parking Slot Booking</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  
+
+  <main>
+    <div class="main-container">
+      <h2>Park!t</h2>
+      <p>Find and book parking slots easily</p>
+      <div class="form-field">
+        <button class="submit-btn-create" id="loginBtn">Login</button>
+        <button class="submit-btn-create" id="signupBtn">SignUp</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2021 Park!t. All rights reserved.</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

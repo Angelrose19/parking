@@ -1,0 +1,71 @@
+<!-- book_slot.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Slot</title>
+    <!-- Include Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        /* Set the map container to fill the entire screen */
+        html, body, #map { 
+            height: 100%; 
+            margin: 0; 
+            padding: 0; 
+        }
+    </style>
+</head>
+<body>
+    <!-- Create a container for the map -->
+    <div id="map"></div>
+
+    <!-- Include Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Function to initialize the map
+        function initMap() {
+            // Create the map with a default center
+            var map = L.map('map').setView([51.505, -0.09], 13);
+
+            // Add OpenStreetMap tiles to the map
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Parse JSON data for nearby parking slots
+            var nearbySlots = JSON.parse('{{ nearby_slots_json | safe}}');
+
+            // Create an empty LatLngBounds object to contain the bounds of all markers
+            var bounds = new L.LatLngBounds();
+
+            // Add markers for each nearby parking slot and extend the bounds
+            nearbySlots.forEach(slot => {
+                var marker = L.marker([slot.latitude, slot.longitude]).addTo(map);
+                var popupContent = 'Slot ID: ' + slot.id + '<br>Available Slots: ' + slot.available_slots + '<br>Rate: $' + slot.rate;
+                marker.bindPopup(popupContent);
+
+                // Extend the bounds to include the marker's position
+                bounds.extend(marker.getLatLng());
+
+                // Event listener for hovering over the marker
+                marker.on('mouseover', function(e) {
+                    marker.openPopup();
+                });
+
+                // Event listener for clicking the marker
+                marker.on('click', function(e) {
+                    // Redirect to booking page with slot ID
+                    window.location.href = '/book_slot_form?id=' + slot.id;
+                });
+            });
+
+            // Fit the map view to the bounds of all markers
+            map.fitBounds(bounds);
+        }
+
+        // Call the initMap function when the page is loaded
+        window.onload = initMap;
+    </script>
+</body>
+</html>

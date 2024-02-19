@@ -1,0 +1,58 @@
+<!-- book_slot_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Parking Slot</title>
+</head>
+<body>
+    <h1>Book Parking Slot</h1>
+    <h2>Slot Details</h2>
+    <p>Slot ID: {{ slot_details.id }}</p>
+    <p>Location: {{ slot_details.location }}</p>
+    <p>Rate: ${{ slot_details.rate }} per 30 mins</p>
+    <p>Available Slots: {{ slot_details.available_slots }}</p>
+
+    <h2>Booking Form</h2>
+    <form id="bookingForm" action="/confirm_booking" method="POST">
+        <input type="hidden" name="slot_id" value="{{ slot_details.id }}">
+        <label for="vehicle">Vehicle Type:</label>
+        <select name="vehicle" id="vehicle">
+            <option value="Two wheeler">Two wheeler</option> 
+            <option value="Four wheeler">Four wheeler</option>
+        </select>    
+        <p>Choose time duration</p>
+        <label for="30">30 mins</label>
+        <input type="radio" id="30" name="duration" value="30" required><br><br>
+        <label for="1">1 hour</label>
+        <input type="radio" id="1" name="duration" value="60" required><br><br>
+        <label for="2">2 hours</label>
+        <input type="radio" id="2" name="duration" value="120" required><br><br>
+        <label for="3">3 hours</label>
+        <input type="radio" id="3" name="duration" value="180" required><br><br>
+        <input type="submit" value="Book Slot">
+    </form>
+    
+    <h2 id="amountToPay">Amount to Pay: $0.00</h2>
+
+    <script>
+        // Function to calculate and display the amount to pay
+        function calculateAmount() {
+            var ratePer30Mins = {{ slot_details.rate }};
+            var selectedDuration = document.querySelector('input[name="duration"]:checked').value;
+            var amount = (selectedDuration / 30) * ratePer30Mins;
+            document.getElementById("amountToPay").innerText = "Amount to Pay: $" + amount.toFixed(2);
+        }
+
+        // Add event listeners to radio buttons to update the amount when selected
+        var radioButtons = document.querySelectorAll('input[name="duration"]');
+        radioButtons.forEach(function(radioButton) {
+            radioButton.addEventListener('change', calculateAmount);
+        });
+
+        // Initial calculation when the page loads
+        calculateAmount();
+    </script>
+</body>
+</html>
